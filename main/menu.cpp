@@ -66,7 +66,7 @@ void Menu::select() {
 
             update();
             break;
-
+            
         case FUNC1_STATE:
             currentState = SETTINGS_MENU;
             selectedMenuItem = 0;
