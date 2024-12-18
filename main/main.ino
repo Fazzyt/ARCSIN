@@ -4,10 +4,11 @@
 #include "menu.h"
 
 Menu menu;
+WIFI_TOOL wifi_tool;
+DisplayManager displayManager;
 
 void setup() {
     Serial.begin(115200);
-    
     // Инициализация компонентов
     displayManager.init();
     menu.init();
@@ -20,22 +21,19 @@ void setup() {
 
 void loop() {
     handleButtonPress();
-    delay(50);
+    delay(200);
 }
 
 void handleButtonPress() {
     if (digitalRead(PIN_BUTTON_UP) == LOW) {
         menu.navigateUp();
-        delay(200);
     }
     
     if (digitalRead(PIN_BUTTON_DOWN) == LOW) {
         menu.navigateDown();
-        delay(200);
     }
     
     if (digitalRead(PIN_BUTTON_ENTER) == LOW) {
-        menu.select();
-        delay(200);
+        menu.select(); 
     }
 }

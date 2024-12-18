@@ -9,8 +9,6 @@
 #define OLED_RESET -1
 #define SCREEN_ADDRESS 0x3C
 
-DisplayManager displayManager;
-
 DisplayManager::DisplayManager() : display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET) {}
 
 bool DisplayManager::init() {
@@ -21,9 +19,17 @@ bool DisplayManager::init() {
 
     display.clearDisplay();
     display.setTextColor(SSD1306_WHITE);
-    display.setTextSize(1);
-    display.setCursor(0, 0);
     return true;
+}
+
+void DisplayManager::drawSineWave() {
+    const float amplitude = 15;
+    const float frequency = 0.1;
+
+    for (int x = 0; x < 64; x++) {
+        int y = SCREEN_HEIGHT / 2 + sin(x * frequency) * amplitude;
+        display.drawPixel(x, y, SSD1306_WHITE);
+    }
 }
 
 void DisplayManager::clear() {
@@ -48,16 +54,9 @@ void DisplayManager::drawCenteredText(const String& text, int y, float size) {
     drawText(x, y, size, text);
 }
 
-void DisplayManager::drawSineWave() {
-    for (int x = 0; x < SCREEN_WIDTH; x++) {
-        int y = SCREEN_HEIGHT / 2 + sin(x * 0.1) * (SCREEN_HEIGHT / 4);
-        display.drawPixel(x, y, SSD1306_WHITE);
-    }
-}
-
 void DisplayManager::renderMainScreen() {
     clear();
-    drawCenteredText("ARCSIN", 10, 2);
+    drawText(65, 32, 1,"ARCSIN");
     drawSineWave();
     update();
 }
@@ -75,4 +74,11 @@ void DisplayManager::renderMenu(const String menuItems[], int selectedIndex, int
         drawText(10, y, 1, menuItems[i]);
     }
     update();
+}
+
+void DisplayManager::drawProgressBar(int current, int total) {
+    int barWidth = SCREEN_WIDTH;
+    int progressWidth = (barWidth * current) / total;
+    display.drawRect(0, SCREEN_HEIGHT - 3, barWidth, 3, SSD1306_WHITE);
+    display.fillRect(0, SCREEN_HEIGHT - 3, progressWidth, 3, SSD1306_WHITE);
 }

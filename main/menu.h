@@ -2,12 +2,13 @@
 #define MENU_H
 
 #include "config.h"
+#include "wifi_tool.h"
 
 enum State {
     MAIN_SCREEN,
     SETTINGS_MENU,
-    ABOUT_SCREEN,
-    FUNC1_STATE
+    SIN_STATE,
+    WIFI_SCAN_STATE
 };
 
 struct MenuItem {
@@ -27,7 +28,7 @@ public:
 private:
     void drawMenuHeader();
     void drawMenuItems();
-    
+
     MenuItem menuItems[MAX_MENU_ITEMS];
     int selectedMenuItem;
     State currentState;

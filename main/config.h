@@ -10,6 +10,6 @@ constexpr int PIN_BUTTON_DOWN = 19;
 constexpr int SCREEN_WIDTH = 128;
 constexpr int SCREEN_HEIGHT = 64;
 
-constexpr int MAX_MENU_ITEMS = 5;
+constexpr int MAX_MENU_ITEMS = 4;
 
 #endif

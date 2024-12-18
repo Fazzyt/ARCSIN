@@ -5,11 +5,10 @@ Menu::Menu() :
     currentState(MAIN_SCREEN), 
     selectedMenuItem(0) {
     // Инициализация пунктов меню
-    menuItems[0] = {"Settings", nullptr};
-    menuItems[1] = {"Sin", nullptr};
-    menuItems[2] = {"Func 2", nullptr};
-    menuItems[3] = {"Func 3", nullptr};
-    menuItems[4] = {"Exit", nullptr}; // Выход без действия
+    menuItems[0] = {"Sinus", nullptr};
+    menuItems[1] = {"WIFI SCAN", nullptr};
+    menuItems[2] = {"Func 3", nullptr};
+    menuItems[3] = {"Exit", nullptr}; // Выход без действия
 }
 
 void Menu::init() {
@@ -25,11 +24,14 @@ void Menu::update() {
             displayManager.clear();
             drawMenuItems();
             break;
-        case FUNC1_STATE:
+        case SIN_STATE:
             displayManager.clear();
             displayManager.drawSineWave();
             displayManager.update();
             break; 
+        case WIFI_SCAN_STATE:
+            wifi_tool.checkNetworks(); 
+            break;
     }
 }
 
@@ -59,15 +61,22 @@ void Menu::select() {
             selectedMenuItem = 0;
             update();
             break;
-        
+
         case SETTINGS_MENU:
-            if (selectedMenuItem == 1) { currentState = FUNC1_STATE;}
-            else if (selectedMenuItem == 4) { currentState = MAIN_SCREEN;}
+            if (selectedMenuItem == 0) { currentState = SIN_STATE;}
+            else if (selectedMenuItem == 1) { currentState = WIFI_SCAN_STATE;}
+            else if (selectedMenuItem == 3) { currentState = MAIN_SCREEN;}
 
             update();
             break;
             
-        case FUNC1_STATE:
+        case SIN_STATE:
+            currentState = SETTINGS_MENU;
+            selectedMenuItem = 0;
+            update();
+            break;
+        
+        case WIFI_SCAN_STATE:
             currentState = SETTINGS_MENU;
             selectedMenuItem = 0;
             update();
