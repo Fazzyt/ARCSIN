@@ -7,7 +7,7 @@
 
 class WIFI_TOOL {
 public:
-    void checkNetworks();
+    void checkNetworksAsync();
 };
 
 extern WIFI_TOOL wifi_tool;

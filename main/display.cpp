@@ -22,13 +22,18 @@ bool DisplayManager::init() {
     return true;
 }
 
-void DisplayManager::drawSineWave() {
+void DisplayManager::drawSineWave(float phaseShift = 0) {
     const float amplitude = 15;
     const float frequency = 0.1;
 
-    for (int x = 0; x < 64; x++) {
-        int y = SCREEN_HEIGHT / 2 + sin(x * frequency) * amplitude;
-        display.drawPixel(x, y, SSD1306_WHITE);
+    for (int x = 0; x < SCREEN_WIDTH / 2; x++) {
+        
+        float radians = (x * frequency) + phaseShift;
+        int y = SCREEN_HEIGHT / 2 + sin(radians) * amplitude;
+
+        if (y >= 0 && y < SCREEN_HEIGHT) {
+            display.drawPixel(x, y, SSD1306_WHITE);
+        }
     }
 }
 
@@ -52,13 +57,6 @@ void DisplayManager::drawCenteredText(const String& text, int y, float size) {
     display.getTextBounds(text, 0, 0, &x1, &y1, &w, &h);
     int x = (SCREEN_WIDTH - w) / 2;
     drawText(x, y, size, text);
-}
-
-void DisplayManager::renderMainScreen() {
-    clear();
-    drawText(65, 32, 1,"ARCSIN");
-    drawSineWave();
-    update();
 }
 
 void DisplayManager::renderMenu(const String menuItems[], int selectedIndex, int itemCount) {

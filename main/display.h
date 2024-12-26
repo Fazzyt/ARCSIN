@@ -16,9 +16,8 @@ public:
     void drawText(int x, int y, float size, const String& text);
     void drawCenteredText(const String& text, int y, float size = 1);
     
-    void drawSineWave();
+    void drawSineWave(float phaseShift);
     void drawProgressBar(int current, int total);
-    void renderMainScreen();
     void renderMenu(const String menuItems[], int selectedIndex, int itemCount);
 
 private:

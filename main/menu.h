@@ -3,17 +3,18 @@
 
 #include "config.h"
 #include "wifi_tool.h"
+#include "ble_djamer.h"
 
 enum State {
     MAIN_SCREEN,
     SETTINGS_MENU,
     SIN_STATE,
-    WIFI_SCAN_STATE
+    WIFI_SCAN_STATE,
+    BLUEJACKING_TOOL_STATE
 };
 
 struct MenuItem {
     const char* text;
-    void (*action)();
 };
 
 class Menu {
@@ -26,6 +27,8 @@ public:
     void select();
 
 private:
+    float phaseShift = 0;
+
     void drawMenuHeader();
     void drawMenuItems();
 
