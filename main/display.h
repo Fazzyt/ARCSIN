@@ -17,6 +17,7 @@ public:
     void drawCenteredText(const String& text, int y, float size = 1);
     
     void drawSineWave(float phaseShift);
+    void drawBatteryIcon(int x, int y, int width, int height, float chargeLevel);
     void drawProgressBar(int current, int total);
     void renderMenu(const String menuItems[], int selectedIndex, int itemCount);
 

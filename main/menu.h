@@ -28,7 +28,7 @@ public:
 
 private:
     float phaseShift = 0;
-
+    
     void drawMenuHeader();
     void drawMenuItems();
 

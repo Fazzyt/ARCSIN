@@ -80,3 +80,12 @@ void DisplayManager::drawProgressBar(int current, int total) {
     display.drawRect(0, SCREEN_HEIGHT - 3, barWidth, 3, SSD1306_WHITE);
     display.fillRect(0, SCREEN_HEIGHT - 3, progressWidth, 3, SSD1306_WHITE);
 }
+
+void DisplayManager::drawBatteryIcon(int x, int y, int width, int height, float chargeLevel) {
+    display.drawRect(x, y, width, height, SSD1306_WHITE);
+    display.fillRect(x + width, y + height / 4, 2, height / 2, SSD1306_WHITE);
+
+    int fillWidth = chargeLevel * (width - 2);
+    display.fillRect(x + 1, y + 1, fillWidth, height - 2, SSD1306_WHITE);
+
+}

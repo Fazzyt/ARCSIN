@@ -19,8 +19,11 @@ void Menu::update() {
     switch(currentState) {
         case MAIN_SCREEN: {
             displayManager.clear();
-            displayManager.drawText(65, 32, 1,"ARCSIN");
-            displayManager.drawSineWave(0);
+            displayManager.drawCenteredText("ARCSIN", SCREEN_HEIGHT / 2, 1);
+
+            displayManager.drawBatteryIcon(5, 0, 15, 8, 1);
+
+            displayManager.drawCenteredText("Press SELECT", SCREEN_HEIGHT - 7, 1);
             displayManager.update();
             break;
             }
