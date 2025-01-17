@@ -5,12 +5,17 @@
 #include "wifi_tool.h"
 #include "ble_djamer.h"
 
+#define USE_IRREMOTE_HPP_AS_PLAIN_INCLUDE
+#include "ir_handler.h"
+
 enum State {
     MAIN_SCREEN,
     SETTINGS_MENU,
     SIN_STATE,
     WIFI_SCAN_STATE,
-    BLUEJACKING_TOOL_STATE
+    BLUEJACKING_TOOL_STATE,
+    IR_RECEIVE_STATE,
+    IR_TRANSMIT_STATE
 };
 
 struct MenuItem {

@@ -8,7 +8,9 @@ Menu::Menu() :
     menuItems[0] = {"Sinus"};
     menuItems[1] = {"WIFI SCAN"};
     menuItems[2] = {"BLE soon"};
-    menuItems[3] = {"Exit"}; // Выход
+    menuItems[3] = {"IR R"};
+    menuItems[4] = {"IR T"};
+    menuItems[5] = {"Exit"}; // Выход
 }
 
 void Menu::init() {
@@ -57,18 +59,35 @@ void Menu::update() {
             ble_tool.jammer();
             break;
             }
+        
+        case IR_RECEIVE_STATE: {
+            irHandler.process();
+            break;
+            }
+        
+        case IR_TRANSMIT_STATE: {
+            displayManager.clear();
+            irHandler.transmit();
+            displayManager.drawCenteredText("send: 200", SCREEN_HEIGHT - 7, 1);
+            displayManager.update();
+            break;
+        }
     }
 }
 
 void Menu::navigateUp() {
-    if (currentState != MAIN_SCREEN) {
-        selectedMenuItem = (selectedMenuItem - 1 + MAX_MENU_ITEMS ) % MAX_MENU_ITEMS;
+    switch(currentState) {
+        case SETTINGS_MENU:
+            selectedMenuItem = (selectedMenuItem - 1 + MAX_MENU_ITEMS ) % MAX_MENU_ITEMS;
+            break;
     }
 }
 
 void Menu::navigateDown() {
-    if (currentState != MAIN_SCREEN) {
-        selectedMenuItem = (selectedMenuItem + 1) % MAX_MENU_ITEMS;
+    switch(currentState) {
+        case SETTINGS_MENU:
+            selectedMenuItem = (selectedMenuItem + 1) % MAX_MENU_ITEMS;
+            break;
     }
 }
 
@@ -88,7 +107,9 @@ void Menu::select() {
             if (selectedMenuItem == 0) { currentState = SIN_STATE;}
             else if (selectedMenuItem == 1) { currentState = WIFI_SCAN_STATE;}
             else if (selectedMenuItem == 2) { currentState = BLUEJACKING_TOOL_STATE;}
-            else if (selectedMenuItem == 3) { currentState = MAIN_SCREEN;}
+            else if (selectedMenuItem == 3) { currentState = IR_RECEIVE_STATE;}
+            else if (selectedMenuItem == 4) { currentState = IR_TRANSMIT_STATE;}
+            else if (selectedMenuItem == 5) { currentState = MAIN_SCREEN;}
             break;
 
         case SIN_STATE:
@@ -104,5 +125,16 @@ void Menu::select() {
         case BLUEJACKING_TOOL_STATE:
             currentState = SETTINGS_MENU;
             selectedMenuItem = 2;
+            break;
+        
+        case IR_RECEIVE_STATE:
+            currentState = SETTINGS_MENU;
+            selectedMenuItem = 3;
+            break;
+        
+        case IR_TRANSMIT_STATE:
+            currentState = SETTINGS_MENU;
+            selectedMenuItem = 4;
+            break;
     }
 }
