@@ -8,7 +8,8 @@ Menu::Menu() :
     menuItems[0] = {"Sinus"};
     menuItems[1] = {"WIFI SCAN"};
     menuItems[2] = {"BLE soon"};
-    menuItems[3] = {"Exit"}; // Выход
+    menuItems[3] = {"IR"};
+    menuItems[4] = {"Exit"}; // Выход
 }
 
 void Menu::init() {
@@ -57,18 +58,25 @@ void Menu::update() {
             ble_tool.jammer();
             break;
             }
+        
+        case IR_RECEIVE_STATE: {
+            irHandler.process();
+            break;
+            }
     }
 }
 
 void Menu::navigateUp() {
-    if (currentState != MAIN_SCREEN) {
-        selectedMenuItem = (selectedMenuItem - 1 + MAX_MENU_ITEMS ) % MAX_MENU_ITEMS;
+    switch(currentState) {
+        case SETTINGS_MENU:
+            selectedMenuItem = (selectedMenuItem - 1 + MAX_MENU_ITEMS ) % MAX_MENU_ITEMS;
     }
 }
 
 void Menu::navigateDown() {
-    if (currentState != MAIN_SCREEN) {
-        selectedMenuItem = (selectedMenuItem + 1) % MAX_MENU_ITEMS;
+    switch(currentState) {
+        case SETTINGS_MENU:
+            selectedMenuItem = (selectedMenuItem + 1) % MAX_MENU_ITEMS;
     }
 }
 
@@ -88,7 +96,8 @@ void Menu::select() {
             if (selectedMenuItem == 0) { currentState = SIN_STATE;}
             else if (selectedMenuItem == 1) { currentState = WIFI_SCAN_STATE;}
             else if (selectedMenuItem == 2) { currentState = BLUEJACKING_TOOL_STATE;}
-            else if (selectedMenuItem == 3) { currentState = MAIN_SCREEN;}
+            else if (selectedMenuItem == 3) { currentState = IR_RECEIVE_STATE;}
+            else if (selectedMenuItem == 4) { currentState = MAIN_SCREEN;}
             break;
 
         case SIN_STATE:
@@ -104,5 +113,11 @@ void Menu::select() {
         case BLUEJACKING_TOOL_STATE:
             currentState = SETTINGS_MENU;
             selectedMenuItem = 2;
+            break;
+        
+        case IR_RECEIVE_STATE:
+            currentState = SETTINGS_MENU;
+            selectedMenuItem = 3;
+            break;
     }
 }
