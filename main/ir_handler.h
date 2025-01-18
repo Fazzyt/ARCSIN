@@ -11,6 +11,8 @@ public:
     void init();
     void process();
     void transmit();
+    void stop_receiver();
+    void start_receiver();
 
 private:
     String data;

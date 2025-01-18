@@ -2,25 +2,45 @@
 
 void IRHandler::init() {
     IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK);  // Инициализация IR приёма
-    IrSender.begin(IR_TRANSMIT_PIN);// Инициализация IR передачи
+    IrSender.begin(IR_TRANSMIT_PIN); // Инициализация IR передачи
+    IrSender.enableIROut(38); // Установка частоты IR передачи 38 kNz
+}
+
+void IRHandler::start_receiver() {
+    IrReceiver.start();
+}
+
+void IRHandler::stop_receiver() {
+    IrReceiver.stop();
 }
 
 void IRHandler::process() {
     displayManager.clear();
+
     if (IrReceiver.decode()) {
-        // Получение протокола
+        // Получение данных от приёмника
+        uint16_t address = (IrReceiver.decodedIRData.decodedRawData >> 16) & 0xFFFF; // Старшие 16 бит (адрес)
+        uint16_t command = IrReceiver.decodedIRData.decodedRawData & 0xFFFF; // Младшие 16 бит (команда)
+
+        // Вывод данных на экран
         String protocol = String(IrReceiver.decodedIRData.protocol);
-        String data = String(IrReceiver.decodedIRData.decodedRawData, HEX);
+        String addressStr = String(address, HEX);
+        String commandStr = String(command, HEX);
 
-        // Вывод данных и протокола на экран
         displayManager.drawText(0, 10, 1, "Protocol: " + protocol);
-        displayManager.drawText(0, 20, 1, "HEX code: " + data);
+        displayManager.drawText(0, 16, 1, "Address: " + addressStr);
+        displayManager.drawText(0, 22, 1, "Command: " + commandStr);
         displayManager.update();
-
-        IrReceiver.resume();
+        
+        IrReceiver.resume(); // Подготовка приёмника к следующему сигналу
     }
 }
 
 void IRHandler::transmit() {
-    IrSender.sendNEC(0xEF00, 0x3);
+    displayManager.clear();
+
+    IrSender.sendNEC(0xEF00 & 0xFF, 0x3);
+
+    displayManager.drawCenteredText("send: 200", SCREEN_HEIGHT - 7, 1);
+    displayManager.update();
 }

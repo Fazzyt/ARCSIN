@@ -8,8 +8,8 @@ Menu::Menu() :
     menuItems[0] = {"Sinus"};
     menuItems[1] = {"WIFI SCAN"};
     menuItems[2] = {"BLE soon"};
-    menuItems[3] = {"IR R"};
-    menuItems[4] = {"IR T"};
+    menuItems[3] = {"IR receiver"};
+    menuItems[4] = {"IR transmitter"};
     menuItems[5] = {"Exit"}; // Выход
 }
 
@@ -19,59 +19,47 @@ void Menu::init() {
 
 void Menu::update() {
     switch(currentState) {
-        case MAIN_SCREEN: {
+        case MAIN_SCREEN:
             displayManager.clear();
             displayManager.drawCenteredText("ARCSIN", SCREEN_HEIGHT / 2, 1);
-
             displayManager.drawBatteryIcon(5, 0, 15, 8, 1);
-
-            displayManager.drawCenteredText("Press SELECT", SCREEN_HEIGHT - 7, 1);
             displayManager.update();
             break;
-            }
 
-        case SETTINGS_MENU: {
+        case SETTINGS_MENU:
             displayManager.clear();
             drawMenuItems();
             break;
-            }
 
-        case SIN_STATE: {
+        case SIN_STATE:
             displayManager.clear(); 
             displayManager.drawSineWave(phaseShift);
             displayManager.update();
-
+            /*
             phaseShift += 0.1;
 
             if (phaseShift >= 15){
                 phaseShift = 0;
             }
-
+            */
             break;
-            }
 
-        case WIFI_SCAN_STATE: {
+        case WIFI_SCAN_STATE:
             wifi_tool.checkNetworksAsync(); 
             break;
-            }
 
-        case BLUEJACKING_TOOL_STATE: {
+        case BLUEJACKING_TOOL_STATE:
             ble_tool.jammer();
             break;
-            }
         
-        case IR_RECEIVE_STATE: {
+        case IR_RECEIVE_STATE:
+            irHandler.start_receiver();
             irHandler.process();
             break;
-            }
         
-        case IR_TRANSMIT_STATE: {
-            displayManager.clear();
+        case IR_TRANSMIT_STATE:
             irHandler.transmit();
-            displayManager.drawCenteredText("send: 200", SCREEN_HEIGHT - 7, 1);
-            displayManager.update();
             break;
-        }
     }
 }
 
@@ -128,6 +116,7 @@ void Menu::select() {
             break;
         
         case IR_RECEIVE_STATE:
+            irHandler.stop_receiver();
             currentState = SETTINGS_MENU;
             selectedMenuItem = 3;
             break;
