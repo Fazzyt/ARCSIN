@@ -53,7 +53,6 @@ void Menu::update() {
             break;
         
         case IR_RECEIVE_STATE:
-            irHandler.start_receiver();
             irHandler.process();
             break;
         
@@ -116,7 +115,6 @@ void Menu::select() {
             break;
         
         case IR_RECEIVE_STATE:
-            irHandler.stop_receiver();
             currentState = SETTINGS_MENU;
             selectedMenuItem = 3;
             break;

@@ -6,14 +6,6 @@ void IRHandler::init() {
     IrSender.enableIROut(38); // Установка частоты IR передачи 38 kNz
 }
 
-void IRHandler::start_receiver() {
-    IrReceiver.start();
-}
-
-void IRHandler::stop_receiver() {
-    IrReceiver.stop();
-}
-
 void IRHandler::process() {
     displayManager.clear();
 
