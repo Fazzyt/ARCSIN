@@ -57,7 +57,9 @@ void Menu::update() {
             break;
         
         case IR_TRANSMIT_STATE:
-            irHandler.transmit();
+            displayManager.clear(); 
+            displayManager.drawText(0, 32, 1, "go to transmit");
+            displayManager.update();
             break;
     }
 }
@@ -74,6 +76,10 @@ void Menu::navigateDown() {
     switch(currentState) {
         case SETTINGS_MENU:
             selectedMenuItem = (selectedMenuItem + 1) % MAX_MENU_ITEMS;
+            break;
+        
+        case IR_TRANSMIT_STATE:
+            irHandler.transmit();
             break;
     }
 }
