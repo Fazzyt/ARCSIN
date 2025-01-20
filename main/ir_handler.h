@@ -9,7 +9,8 @@
 class IRHandler {
 public:
     void init();
-    void process();
+    void receiver();
+    void receiver_resume();
     void transmit();
 
 private:

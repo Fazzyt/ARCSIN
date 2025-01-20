@@ -6,8 +6,10 @@ void IRHandler::init() {
     IrSender.enableIROut(38); // Установка частоты IR передачи 38 kNz
 }
 
-void IRHandler::process() {
+void IRHandler::receiver() {
+
     displayManager.clear();
+    displayManager.drawText(0, 0, 1, "Install your device with the transmitter to the remote control");
 
     if (IrReceiver.decode()) {
         // Форматирование строки для вывода
@@ -17,16 +19,23 @@ void IRHandler::process() {
         String rawDataStr = String(IrReceiver.decodedIRData.decodedRawData, HEX);
 
         // Вывод данных на экран
-        displayManager.drawText(0, 2, 1, "Protocol: " + protocol);
-        displayManager.drawText(0, 12, 1, "Address: " + addressStr);
-        displayManager.drawText(0, 22, 1, "Command: " + commandStr);
-        displayManager.drawText(0, 32, 1, "RawData: " + rawDataStr);
-        displayManager.update();
+        displayManager.clear();
+        displayManager.drawCenteredText(protocol, 2, 1);
+        displayManager.drawText(0, 12, 1, "A: 0x" + addressStr);
+        displayManager.drawText(0, 22, 1, "C: 0x" + commandStr);
+        displayManager.drawText(0, 32, 1, "Raw: " + rawDataStr);
 
-        IrReceiver.resume(); // Подготовка приёмника к следующему сигналу
+        // Подсказка
+        displayManager.drawText(0, 56, 1, "up to retry");
+
     }
+
+    displayManager.update();
 }
 
+void IRHandler::receiver_resume() {
+    IrReceiver.resume(); // Подготовка приёмника к следующему сигналу
+}
 
 void IRHandler::transmit() {
     displayManager.clear();

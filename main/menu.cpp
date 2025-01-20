@@ -53,7 +53,7 @@ void Menu::update() {
             break;
         
         case IR_RECEIVE_STATE:
-            irHandler.process();
+            irHandler.receiver();
             break;
         
         case IR_TRANSMIT_STATE:
@@ -68,6 +68,9 @@ void Menu::navigateUp() {
     switch(currentState) {
         case SETTINGS_MENU:
             selectedMenuItem = (selectedMenuItem - 1 + MAX_MENU_ITEMS ) % MAX_MENU_ITEMS;
+            break;
+        case IR_RECEIVE_STATE:
+            irHandler.receiver_resume();
             break;
     }
 }
